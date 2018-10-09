@@ -1,26 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Map from './Map';
+import ErrorHandler from './ErrorHandler';
 
 class App extends Component {
+    constructor() {
+        super();
+        this.state = {
+            mapCenter: {
+                lat: 34.540309,
+                lng: -112.469661
+            }
+        };
+    }
   render() {
     return (
-      <div className="App">
+      <main className="App">
         <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
+                React Neighborhood Map
         </header>
-      </div>
+
+        <ErrorHandler>
+            <Map
+                initialCenter={{
+                    lat: this.state.mapCenter.lat,
+                    lng: this.state.mapCenter.lng
+                }}
+                defaultZoom={15}
+            />
+        </ErrorHandler>
+      </main>
     );
   }
 }
