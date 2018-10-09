@@ -7,7 +7,9 @@
     color: white;
 }
 
-a {
-  color: #ff643f;
+.map {
+    position:relative;
+    margin: 0;
+    width: 100vw;
+    height: 94.5vh;
 }
-
