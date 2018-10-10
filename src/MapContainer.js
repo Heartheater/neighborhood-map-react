@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import Sidebar from './Sidebar';
 
 export default class MapContainer extends Component {
     state = {
@@ -47,7 +48,6 @@ export default class MapContainer extends Component {
 
     addMarkers = () => {
         const { google } = this.props;
-        let { infoWindow } = this.state;
         const bounds = new google.maps.LatLngBounds();
 
         //create a new marker for each location
@@ -60,7 +60,7 @@ export default class MapContainer extends Component {
             });
 
             //show info window when marker is clicked
-            marker.addListener('click', () => this.showInfo(marker, infoWindow));
+            marker.addListener('click', () => this.showInfo(marker, this.state.infoWindow));
 
             //add this marker to allMarkers array
             this.setState((prev) => ({
@@ -86,10 +86,24 @@ export default class MapContainer extends Component {
     };
 
 
+    locationClickHandler = (location) => {
+       // console.log(this.state.allMarkers)
+
+        this.state.allMarkers.map(marker => {
+            if (location.name.toLowerCase() === marker.name.toLowerCase()) {
+                this.showInfo(marker, this.state.infoWindow);
+            }
+        });
+    }
+
+
     render() {
         return (
             <div className="map-container"> 
-
+                <Sidebar
+                    locationArray={this.state.locationArray}
+                    locationClickHandler={this.locationClickHandler}
+                />
                 <div className="map" ref="map" role="application">
                     loading map...
                 </div>

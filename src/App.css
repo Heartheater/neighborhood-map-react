@@ -13,3 +13,123 @@
     width: 100vw;
     height: 94.5vh;
 }
+
+
+/*************************Location List Sidebar*****************************8*/
+.sidebar {
+    padding-top: 50px;
+    position: absolute;
+    background-color: rgb(246, 246, 247);
+    z-index: 1;
+    max-width: 300px;
+}
+
+.locations-list {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    width: 100%;
+    padding-left: 0;
+    text-align: center;
+    overflow: scroll;
+    height: 82.5vh;
+}
+
+/************************* Sidebar top ****************************************/
+
+.sidebar-top {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5vh 0 3vh 0;
+    z-index: 2;
+}
+
+.location-filter-wrapper {
+    position: relative;
+    padding: 0 30px;
+}
+
+.location-filter-btn {
+    font-size: 18px;
+    padding: 5px 0;
+    border: 1px #b2b2b2 solid;
+    border-radius: 2px;
+    max-width: 18vw;
+    min-width: 180px;
+}
+
+.delete-input-value {
+    padding: 5px 0;
+    border: 1px #b2b2b2 solid;
+    border-left: none;
+    -moz-border-radius-topright: 2px;
+    border-top-right-radius: 2px;
+    -moz-border-radius-bottomright: 2px;
+    border-bottom-right-radius: 2px;
+    font-size: 18px;
+    width: 40px;
+    background-color: white;
+}
+
+.no-results {
+    margin: 40px auto;
+}
+
+/*************************** Location list item **********************/
+
+.location-list-item {
+    width: 100%;
+    margin: 8px 0;
+    height: 110px;
+    overflow: hidden;
+    display: grid;
+    position: relative;
+    grid-template-areas: "details img";
+    background-color: white;
+}
+
+.location-list-item:first-child {
+    margin-top: 0;
+}
+
+.location-list-item:hover {
+    background-color: #ffd2d2;
+    cursor: pointer;
+}
+
+.location-img {
+    grid-area: img;
+    width: 15vw;
+    max-width: 100px;
+    min-width: 70px;
+    height: auto;
+}
+
+.location-info {
+    grid-area: details;
+    font-size: 13px;
+    min-width: 183px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.location-name {
+    font-size: 15px;
+    min-width: 100px;
+    margin: 7px 0 5px 0;
+}
+
+.location-desc {
+    margin: 0;
+    color: #616161;
+    font-style: italic;
+}
+
+.hours {
+    margin-top: 5px;
+}
+
+.category {
+    margin-bottom: 5px;
+}
