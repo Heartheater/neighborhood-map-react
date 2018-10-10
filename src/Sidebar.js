@@ -9,7 +9,7 @@ export default class Sidebar extends Component {
         let count = 1;
 
         //create a li for each location object
-        this.props.locationArray.map((location) => {
+        this.props.locationsArray.map((location) => {
             listItems.push(
                 <li
                     key={`location-list-item-${count}`}

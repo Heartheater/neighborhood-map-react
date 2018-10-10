@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
+import escapeRegEx from 'escape-string-regexp';
 import Sidebar from './Sidebar';
 
 export default class MapContainer extends Component {
@@ -11,16 +12,6 @@ export default class MapContainer extends Component {
         windowOpen: false,
         activeMarker: null,
         allMarkers: [],
-
-        locationArray: [
-            { name: 'Haunted Hamburger', lat: 34.750263, lng: -112.11605 },
-            { name: 'Jerome Artists Co-op', lat: 34.7496591, lng: -112.114419 },
-            { name: 'The Mine Cafe', lat: 34.7511169, lng: -112.1158929 },
-            { name: 'Mile High Grill & Inn', lat: 34.750431, lng: -112.1159191 },
-            { name: 'Spirit Room', lat: 34.7512062, lng: -112.1162356 },
-            { name: 'The Flatiron', lat: 34.749793, lng: -112.114615 },
-            { name: 'Surgeon\'s House', lat: 34.749636, lng: -112.115789 }
-        ],
 
         infoWindow: new this.props.google.maps.InfoWindow(),
     }
@@ -48,10 +39,9 @@ export default class MapContainer extends Component {
 
     addMarkers = () => {
         const { google } = this.props;
-        const bounds = new google.maps.LatLngBounds();
 
         //create a new marker for each location
-        this.state.locationArray.map(location => {
+        return this.props.locationsArray.map(location => {
             const marker = new google.maps.Marker({
                 position: { lat: location.lat, lng: location.lng },
                 map: this.map,
@@ -63,15 +53,10 @@ export default class MapContainer extends Component {
             marker.addListener('click', () => this.showInfo(marker, this.state.infoWindow));
 
             //add this marker to allMarkers array
-            this.setState((prev) => ({
+            return this.setState((prev) => ({
                 allMarkers: [...prev.allMarkers, marker]
             }));
-
-            return bounds.extend(marker.position);
         });
-        //make sure all markers are visible on map
-       return this.map.fitBounds(bounds);
-
     }//addMarkers end
 
     showInfo = (marker, infoWindow) => {
@@ -85,7 +70,6 @@ export default class MapContainer extends Component {
         infoWindow.addListener('closeclick', () => infoWindow.marker = null);
     };
 
-
     locationClickHandler = (location) => {
        // console.log(this.state.allMarkers)
 
@@ -96,14 +80,58 @@ export default class MapContainer extends Component {
         });
     }
 
+    filterMarkers(query) {
+        //check each map marker to see if it matches the search query
+        this.state.allMarkers.map(marker => {
+            //if the marker matches the query, keep it visible
+            if (marker.name.toLowerCase().includes(query)) {
+               return marker.setMap(this.map);
+            } //if the marker doesn't match, hide it from the map
+            else {
+               return marker.setMap(null);
+            }
+        });
+    }
 
     render() {
         return (
             <div className="map-container"> 
                 <Sidebar
-                    locationArray={this.state.locationArray}
+                    locationsArray={this.props.locationsArray}
                     locationClickHandler={this.locationClickHandler}
-                />
+                >
+                    {/*Input for filtering results*/}
+                    <div className="location-filter-wrapper">
+                        <input
+                            className="location-filter-btn"
+                            type="text"
+                            placeholder="Filter locations"
+                            onChange={(e) => {
+                                //escape any special characters in the query
+                                const query = escapeRegEx(e.target.value).toLowerCase();
+                                this.props.filterLocations(query);
+                                return this.filterMarkers(query);
+                            }}
+                        />
+                        <button
+                            className="delete-input-value"
+                            onClick={() => {
+                                //erases text in the location filter input
+                                const filterBtn = document.querySelector(".location-filter-btn");
+                                filterBtn.value = "";
+                                //reset filtered locations 
+                                return this.props.filterLocations("");
+                            }}
+                        > x
+                        </button>
+                    </div>
+
+                    {this.props.noResultFound ?
+                        <p className="no-results"> No Results Found </p>
+                        : null
+                    }
+                </Sidebar>
+                
                 <div className="map" ref="map" role="application">
                     loading map...
                 </div>
