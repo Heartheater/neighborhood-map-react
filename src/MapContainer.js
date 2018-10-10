@@ -70,15 +70,25 @@ export default class MapContainer extends Component {
         infoWindow.addListener('closeclick', () => infoWindow.marker = null);
     };
 
-    locationClickHandler = (location) => {
-       // console.log(this.state.allMarkers)
+    animateMarker(marker) {
+        const { google } = this.props;
 
+        //return if marker still has an animation 
+        if (marker.getAnimation()) return;
+        marker.setAnimation(google.maps.Animation.BOUNCE);
+        setTimeout(() => marker.setAnimation(null), 750);
+    }
+
+    locationClickHandler = (location) => {
         this.state.allMarkers.map(marker => {
             if (location.name.toLowerCase() === marker.name.toLowerCase()) {
+                //show info window for the clicked location
                 this.showInfo(marker, this.state.infoWindow);
+                this.animateMarker(marker);
             }
         });
     }
+
 
     filterMarkers(query) {
         //check each map marker to see if it matches the search query
@@ -119,8 +129,9 @@ export default class MapContainer extends Component {
                                 //erases text in the location filter input
                                 const filterBtn = document.querySelector(".location-filter-btn");
                                 filterBtn.value = "";
-                                //reset filtered locations 
-                                return this.props.filterLocations("");
+                                //reset filtered locations and markers
+                                this.props.filterLocations("");
+                                this.filterMarkers("");
                             }}
                         > x
                         </button>
