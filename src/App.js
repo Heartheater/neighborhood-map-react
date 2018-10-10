@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import {GoogleApiWrapper} from 'google-maps-react';
-import MapContainer from './Map';
+import MapContainer from './MapContainer';
 import ErrorHandler from './ErrorHandler';
 
 //google maps Api key
