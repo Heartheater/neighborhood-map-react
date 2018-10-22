@@ -1,27 +1,62 @@
-.App-header {
+
+.header {
     background-color: #282c34;
-    padding-bottom: 10px;
-    text-align: center;
-    justify-content: center;
+    padding: 5px 40px 5px 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 9;
+    display: flex;
     font-size: calc(10px + 2vmin);
+    justify-content: space-between;
     color: white;
 }
 
+.title {
+    position: relative;
+    padding-right: 90px;
+    font-family: 'Exo', sans-serif;
+    font-size: 29px;
+    color: #f2f4f4;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.loading{
+    position: fixed;
+    top: 90px;
+    left: 40px;
+    margin:auto;
+}
+
+
+.open-sidebar-btn {
+    position: relative;
+    border: none;
+    padding: 5px 10px;
+    color: #f2f4f4;
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+}
+
+/************************* Map ******************************/
+
+
 .map {
-    position:relative;
+    position: relative;
     margin: 0;
     width: 100vw;
-    height: 94.5vh;
+    height: 100vh;
 }
 
 
 /*************************Location List Sidebar*****************************8*/
 .sidebar {
-    padding-top: 50px;
+    padding-top: 40px;
     position: absolute;
-    background-color: rgb(246, 246, 247);
+    background-color: #ced1d8;
     z-index: 1;
-    max-width: 300px;
+    max-width: 345px;
 }
 
 .locations-list {
@@ -32,7 +67,7 @@
     padding-left: 0;
     text-align: center;
     overflow: scroll;
-    height: 82.5vh;
+    height: 83.4vh;
 }
 
 /************************* Sidebar top ****************************************/
@@ -46,6 +81,7 @@
 
 .location-filter-wrapper {
     position: relative;
+    margin:auto;
     padding: 0 30px;
 }
 
@@ -72,7 +108,8 @@
 }
 
 .no-results {
-    margin: 40px auto;
+    margin: 20px auto 0 auto;
+    position:relative;
 }
 
 /*************************** Location list item **********************/
@@ -97,27 +134,43 @@
     cursor: pointer;
 }
 
-.location-img {
+.location-img-wrapper {
+    position: relative;
     grid-area: img;
-    width: 15vw;
+    overflow: hidden;
+    width: 14vw;
     max-width: 100px;
     min-width: 70px;
+    height: 100%;
+}
+
+.location-img {
+    width: 100px;
     height: auto;
 }
 
 .location-info {
     grid-area: details;
     font-size: 13px;
-    min-width: 183px;
+    min-width: 203px;
     display: flex;
+    margin: 0 9px 0 5px;
     flex-direction: column;
     position: relative;
 }
+.location-info hr{
+    color: red;
+    width: 35px;
+    margin: 0 auto;
+    border-style: solid;
+    margin-bottom:2px;
+}
 
 .location-name {
-    font-size: 15px;
+    font-size: 14px;
+    font-weight: 600;
     min-width: 100px;
-    margin: 7px 0 5px 0;
+    margin: 2px 0 4px 0;
 }
 
 .location-desc {
@@ -126,10 +179,96 @@
     font-style: italic;
 }
 
-.hours {
-    margin-top: 5px;
+
+.location-hours {
+    margin-top: 3px;
 }
 
-.category {
-    margin-bottom: 5px;
+.location-category {
+    margin-bottom: 3px;
+}
+/**************************** Info Window **********************************/
+.info-window {
+    display: grid;
+    grid-template-areas: "title img" 
+                         "details img";
+}
+
+.info-window-title {
+    grid-area: title;
+    font-size: 15px;
+    font-weight: normal;
+    margin: 0;
+    padding-right: 6px;
+}
+
+.info-window-details {
+    grid-area: details;
+    padding-right: 6px;
+    color: #444444;
+    font-style: italic;
+}
+
+.info-window-category {
+    margin: 0;
+    font-style: normal;
+    padding-bottom: 8px;
+}
+
+.info-window-img-wrapper {
+    grid-area: img;
+    width: 80px;
+    overflow: hidden;
+}
+
+.info-window-img {
+    height: 90px;
+}
+
+/**************************** Featured Location ***************************/
+.featured-img {
+    width: 300px;
+}
+
+
+/**************************** Animation ************************************/
+.close {
+    animation: close 0.9s ease forwards;
+}
+
+.open {
+    animation: open 0.9s ease forwards;
+}
+
+@keyframes close {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: -2000px;
+    }
+}
+
+@keyframes open {
+    0% {
+        top: -2000px;
+    }
+
+    100% {
+        top: 0;
+    }
+}
+
+@media screen and (max-width: 497px){
+    .header {
+        padding: 5px 1px 5px 20px;
+    }
+
+
+    .title {
+        padding-right: 30px;
+        font-size: calc(10px + 4vw);
+        letter-spacing: 0;
+    }
 }

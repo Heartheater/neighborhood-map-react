@@ -5,32 +5,48 @@ export default class Sidebar extends Component {
     getListItems() {
         //listItems will hold all the location names
         let listItems = []; 
-        //count is for making a unique key for each item
+        //count is for making a unique key for each list item
         let count = 1;
 
         //create a li for each location object
-        this.props.locationsArray.map((location) => {
+        this.props.locationsArray.map((place) => {
+            if (!place || !place.name) return;
             listItems.push(
                 <li
                     key={`location-list-item-${count}`}
                     className='location-list-item'
-                    onClick={() => this.props.locationClickHandler(location)}
+                    onClick={() => this.props.locationClickHandler(place)}
                 >
                     <div className="location-info">
                         <h3 className="location-name">
-                            {location.name}
+                            {place.name}
                         </h3>
+                        <hr/>
                         <div className="location-desc">
-                            <div className="category">
-                                category
+                            <div className="location-category">
+                                {`${place.categories ? place.categories[0].name : ''}`}
                             </div>
-                            {`address `}
-                            {location.hours ?
-                                <div className="hours">
-                                    {location.hours.status}
+                            {place.location ?
+                                <div className="location-address">
+                                    {`${place.location.formattedAddress[0]},`}
+                                    <br />
+                                    {`${place.location.formattedAddress[1]},`}
+                                </div>
+                                : ''
+                            }
+                            {place.hours ?
+                                <div className="location-hours">
+                                    {place.hours.status}
                                 </div>
                                 : null}
                         </div>
+                    </div>
+                    <div className="location-img-wrapper">
+                        <img
+                            className="location-img"
+                            src={`${this.props.findPhoto(place)}`}
+                            alt={`${place.name}`}
+                        />
                     </div>
                 </li>
             );
@@ -39,7 +55,6 @@ export default class Sidebar extends Component {
         });
         return listItems;
     }
-
 
     render() {
         return (
@@ -50,7 +65,9 @@ export default class Sidebar extends Component {
                     </div>
                     <ul className="locations-list">
                         {
-                            this.getListItems()
+                         (this.props.locationsArray[0]) ?
+                                this.getListItems()
+                                : <li className="no-results"> No Results Found </li>
                         }
                     </ul>
                 </div>

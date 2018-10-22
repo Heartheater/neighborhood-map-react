@@ -16,9 +16,10 @@ export default class MapContainer extends Component {
         infoWindow: new this.props.google.maps.InfoWindow(),
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         this.loadMap();
         this.addMarkers();
+        console.log(this.props.locationsArray);
     }
 
     loadMap() {
@@ -38,37 +39,85 @@ export default class MapContainer extends Component {
     }//loadMap end
 
     addMarkers = () => {
+        console.dir(this.props.locationsArray);
+        if (!this.props.locationsArray[0] || !this.props.locationsArray[0].location) return;
         const { google } = this.props;
 
         //create a new marker for each location
-        return this.props.locationsArray.map(location => {
+        return this.props.locationsArray.map(place => {
+            console.log(place);
+
             const marker = new google.maps.Marker({
-                position: { lat: location.lat, lng: location.lng },
+                position: { lat: place.location.lat, lng: place.location.lng },
                 map: this.map,
-                name: location.name,
-                title: location.name
+                name: place.name,
+                title: place.name
             });
 
             //show info window when marker is clicked
-            marker.addListener('click', () => this.showInfo(marker, this.state.infoWindow));
+            marker.addListener('click', () => this.showInfo(marker, place, this.state.infoWindow));
+            console.log(marker);
 
             //add this marker to allMarkers array
             return this.setState((prev) => ({
                 allMarkers: [...prev.allMarkers, marker]
             }));
         });
+
     }//addMarkers end
 
-    showInfo = (marker, infoWindow) => {
+    findLocationPhoto(place) {
+        //size of the image
+        let dimensions = '540x600';
+        let defaultPhoto = '#',
+            photo = defaultPhoto;
+
+        //if there are no photos, return defaultPhoto
+        if (!place.photos || place.photos.count === 0) {
+            return photo;
+        }
+        //return best photo if it exists 
+        if (place.bestPhoto) {
+            photo = (place.bestPhoto.prefix + dimensions + place.bestPhoto.suffix);
+        }
+        else if (place.photos.groups) {
+            //map through all the photo groups and find a photo
+            place.photos.groups.map(photoGroup => {
+                if (photoGroup.count > 0) {
+                    photo = (photoGroup.items[0].prefix + dimensions + photoGroup.suffix);
+                }
+            });//map end
+        }
+        return photo;
+    }//findLocationPhoto end
+
+    showInfo = (marker, locationObj, infoWindow) => {
         //return if infowindow is already open on this marker
         if (infoWindow.marker === marker) return;
         infoWindow.marker = marker;
-        infoWindow.setContent(`<h4>${marker.name}</h4> <p>details</p>`);
+
+        let windowContent = (`
+            <div class="info-window">
+                <h4 class="info-window-title">
+                    ${locationObj.name}
+                </h4> 
+                <div class="info-window-img-wrapper">
+                    <img class="info-window-img" src="${this.findLocationPhoto(locationObj)}" alt="${locationObj.name}" /> 
+                </div>
+                <div class="info-window-details">
+                    <div class="info-window-category">${ locationObj.categories ? locationObj.categories[0].name : ''}</div>
+                    ${locationObj.location.formattedAddress[0]}
+                    <br>${locationObj.location.formattedAddress[1]}
+                </div>
+            </div>
+        `);
+
+        infoWindow.setContent(windowContent);
         infoWindow.open(this.map, marker);
 
         //erase content when window closes
         infoWindow.addListener('closeclick', () => infoWindow.marker = null);
-    };
+    }; //showInfo end
 
     animateMarker(marker) {
         const { google } = this.props;
@@ -83,7 +132,7 @@ export default class MapContainer extends Component {
         this.state.allMarkers.map(marker => {
             if (location.name.toLowerCase() === marker.name.toLowerCase()) {
                 //show info window for the clicked location
-                this.showInfo(marker, this.state.infoWindow);
+                this.showInfo(marker, location, this.state.infoWindow);
                 this.animateMarker(marker);
             }
         });
@@ -109,8 +158,9 @@ export default class MapContainer extends Component {
                 <Sidebar
                     locationsArray={this.props.locationsArray}
                     locationClickHandler={this.locationClickHandler}
+                    findPhoto={this.findLocationPhoto}
                 >
-                    {/*Input for filtering results*/}
+
                     <div className="location-filter-wrapper">
                         <input
                             className="location-filter-btn"
@@ -128,20 +178,17 @@ export default class MapContainer extends Component {
                             onClick={() => {
                                 //erases text in the location filter input
                                 const filterBtn = document.querySelector(".location-filter-btn");
+                                if (!filterBtn.value) return;
                                 filterBtn.value = "";
                                 //reset filtered locations and markers
                                 this.props.filterLocations("");
+                                console.log(this.props.locationsArray);
                                 this.filterMarkers("");
                             }}
                         > x
                         </button>
                     </div>
-
-                    {this.props.noResultFound ?
-                        <p className="no-results"> No Results Found </p>
-                        : null
-                    }
-                </Sidebar>
+                </Sidebar >
                 
                 <div className="map" ref="map" role="application">
                     loading map...
@@ -150,6 +197,4 @@ export default class MapContainer extends Component {
             );
     }
 }
-
-
 

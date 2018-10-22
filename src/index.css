@@ -7,3 +7,15 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+::selection {
+    background-color: #fe6565;
+}
+
+button:hover, a:hover {
+    cursor: pointer;
+}
+
+button:active {
+    background-color: #fe6565;
+}
