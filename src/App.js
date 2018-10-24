@@ -33,7 +33,6 @@ class App extends Component {
             "5244874911d23515396871b5",
         ];
         let locationData = [];
-
         //loop through locationIds array and use each id to fetch location data
         for (let count = 0; count < locationIds.length; ++count) {
             await FoursquareAPI.getLocationDetails(locationIds[count])
@@ -44,7 +43,8 @@ class App extends Component {
                     return locationData.push(data.response.venue);
                 }).catch(err => console.error(err));
         }
-        
+        console.log(locationData);
+
         this.setState({
             allLocations: locationData,
             searchResults: locationData,

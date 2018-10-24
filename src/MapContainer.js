@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import escapeRegEx from 'escape-string-regexp';
 import Sidebar from './Sidebar';
 
@@ -12,14 +11,12 @@ export default class MapContainer extends Component {
         windowOpen: false,
         activeMarker: null,
         allMarkers: [],
-
         infoWindow: new this.props.google.maps.InfoWindow(),
     }
 
     async componentDidMount() {
         this.loadMap();
         this.addMarkers();
-        console.log(this.props.locationsArray);
     }
 
     loadMap() {
@@ -39,14 +36,11 @@ export default class MapContainer extends Component {
     }//loadMap end
 
     addMarkers = () => {
-        console.dir(this.props.locationsArray);
         if (!this.props.locationsArray[0] || !this.props.locationsArray[0].location) return;
         const { google } = this.props;
 
         //create a new marker for each location
         return this.props.locationsArray.map(place => {
-            console.log(place);
-
             const marker = new google.maps.Marker({
                 position: { lat: place.location.lat, lng: place.location.lng },
                 map: this.map,
@@ -84,7 +78,7 @@ export default class MapContainer extends Component {
             //map through all the photo groups and find a photo
             place.photos.groups.map(photoGroup => {
                 if (photoGroup.count > 0) {
-                    photo = (photoGroup.items[0].prefix + dimensions + photoGroup.suffix);
+                   photo = (photoGroup.items[0].prefix + dimensions + photoGroup.suffix);
                 }
             });//map end
         }
@@ -191,7 +185,7 @@ export default class MapContainer extends Component {
                 </Sidebar >
                 
                 <div className="map" ref="map" role="application">
-                    loading map...
+                    Loading Map...
                 </div>
             </div>
             );
