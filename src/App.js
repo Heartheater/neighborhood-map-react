@@ -25,7 +25,6 @@ class App extends Component {
         let locationIds = [
             /*
             "4d4464d4bf61a1cd2b5408ac",
-            
             "4f999981e5e82ef193a1ce45",
             "4df7c1342271d8baf9c4de8d",
             "4ed67e1a61afeefb7cdc16ef",
@@ -863,6 +862,11 @@ class App extends Component {
                     return locationData.push(data.response.venue);
                 }).catch(err => console.error(err));
         }
+
+        for (let ct = 0; ct < 10; ++ct) {
+            locationData.push(locationData[0]);
+        }
+
         console.log(locationData);
 
         this.setState({
@@ -903,21 +907,20 @@ class App extends Component {
     return (
       <main className="App">
             <header className="header">
-                <div>
-                    <button
-                        className="open-sidebar-btn"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            //toggles sidebar open/close
-                            let menu = document.querySelector('.sidebar');
-                            if (!menu) return;
-                            menu.classList.toggle("close");
-                            menu.classList.toggle("open");
-                        }}
-                    >
-                        <i className="fas fa-bars fa-2x" />
-                    </button>
-                </div>
+                <button
+                    className="open-sidebar-btn"
+                    onClick={(e) => {
+                        e.preventDefault();
+                        //toggles sidebar open/close
+                        let menu = document.querySelector('.sidebar');
+                        if (!menu) return;
+                        menu.classList.toggle("close");
+                        menu.classList.toggle("open");
+                    }}
+                    aria-label={"toggle sidebar"}
+                >
+                    <i className="fas fa-bars fa-2x" />
+                </button>
                 <h1 className="title"> React Neighborhood Map </h1>
             </header>
             {this.state.loading ?

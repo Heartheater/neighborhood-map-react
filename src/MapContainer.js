@@ -92,9 +92,9 @@ export default class MapContainer extends Component {
 
         let windowContent = (`
             <div class="info-window">
-                <h4 class="info-window-title">
+                <h2 class="info-window-title">
                     ${locationObj.name}
-                </h4> 
+                </h2> 
                 <div class="info-window-img-wrapper">
                     <img class="info-window-img" src="${this.findLocationPhoto(locationObj)}" alt="${locationObj.name}" /> 
                 </div>
@@ -171,6 +171,7 @@ export default class MapContainer extends Component {
                         <input
                             className="location-filter-btn"
                             type="text"
+                            aria-label={"filter locations"}
                             placeholder="Filter locations"
                             onChange={(e) => {
                                 //escape any special characters in the query
@@ -181,6 +182,7 @@ export default class MapContainer extends Component {
                         />
                         <button
                             className="delete-input-value"
+                            aria-label="erase input value"
                             onClick={() => {
                                 //erases text in the location filter input
                                 const filterBtn = document.querySelector(".location-filter-btn");
@@ -195,8 +197,8 @@ export default class MapContainer extends Component {
                         </button>
                     </div>
                 </Sidebar>
-                
-                <div className="map" ref="map" role="application">
+
+                <div className="map" ref="map" role="application" aria-hidden="true">
                     Loading Map...
                 </div>
             </div>

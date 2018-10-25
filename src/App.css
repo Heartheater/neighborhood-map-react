@@ -381,12 +381,14 @@
 
     100% {
         top: -2000px;
+        visibility: hidden;
     }
 }
 
 @keyframes open {
     0% {
         top: -2000px;
+        visibility: initial;
     }
 
     100% {

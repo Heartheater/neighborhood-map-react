@@ -40,13 +40,23 @@ export default class Sidebar extends Component {
                     key={`location-list-item-${count}`}
                     className='location-list-item'
                     onClick={() => this.props.locationClickHandler(place)}
+                    aria-label={`${place.name}`}
+                    aria-details={`li-desc-${place.id}`}
+                    role="button"
+                    onKeyPress={(e) => {
+                        e.preventDefault();
+                        if (e.key === 'Enter') {
+                            this.props.locationClickHandler(place)
+                        }
+                    }}
+                    tabIndex="0"
                 >
                     <div className="location-info">
                         <h3 className="location-name">
                             {place.name}
                         </h3>
                         <hr/>
-                        <div className="location-desc">
+                        <div className="location-desc" id={`li-desc-${place.id}`}>
                             <div className="location-category">
                                 {`${place.categories ? place.categories[0].name : ''}`}
                             </div>
@@ -77,10 +87,13 @@ export default class Sidebar extends Component {
             count++;
             return listItems;
         });
+
+
+
         //add foursquare logo to end of list
         listItems.push(
-            <li className="fs-logo-wrapper" key="location-list-logo">
-                <a href="https://foursquare.com/" target="_new_tab">
+            <li className="fs-logo-wrapper" key="location-list-logo" >
+                <a aria-label={"four square"} href="https://foursquare.com/" target="_new_tab">
                     <img className="foursquare-logo" alt="powered by foursquare" src={fourSquareImage} />
                 </a>
             </li>
@@ -90,7 +103,7 @@ export default class Sidebar extends Component {
 
     render() {
         return (
-            <div className="sidebar open">
+            <section className="sidebar open">
                 {/*Check if a location should be featured instead of showing the list items*/}
                 {this.getFeatured() ?
                     <FeatureLocation
@@ -110,21 +123,21 @@ export default class Sidebar extends Component {
                     </FeatureLocation>
                     :
                     <div className="locations-list-wrapper" >
-                        <div className="sidebar-top">
+                        <section className="sidebar-top" >
                             {this.props.children}
-                        </div>
+                        </section>
                         <ul className="locations-list">
                             {this.props.locationsArray[0] ?
                                 this.getListItems()
                                 :
-                                <li className="no-results">
+                                <li className="no-results" aria-label="no results found">
                                     No Results Found
                                 </li>
                             }
                         </ul>
                     </div>
                     }
-            </div>
+            </section>
         );
     }
 }

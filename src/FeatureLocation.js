@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function FeatureLocation(props) {
     return (
-        <div className="featured-location">
+        <section className="featured-location">
             {props.children}
             <div className="featured-location-top">
                 <div className="featured-img-wrapper">
@@ -17,22 +17,26 @@ export default function FeatureLocation(props) {
                 </h2>
             </div>
 
-            <div className="featured-details">
+            <div className="featured-details" aria-label={`${props.featuredLocation.categories[0].name}`}>
                 <div className="featured-rating-price-wrapper">
-                    {props.featuredLocation.rating}
-                    {props.getRating(props.featuredLocation)}
-                    <div className="featured-price">
+                    <div aria-label={"restaurant rating"}>
+                        {props.featuredLocation.rating}
+                    </div>
+                    <div aria-hidden={"true"}>
+                        {props.getRating(props.featuredLocation)}
+                    </div>
+                    <div className="featured-price" aria-label={"restaurant price"}>
                         {props.featuredLocation.price.currency}
                     </div>
                     {props.featuredLocation.categories[0].name}
-
                 </div>
                 {props.featuredLocation.url ?
                     <a target="_tab"
                         href={`${props.featuredLocation.url}`}
                         className="featured-link"
+                        aria-label={"view website"}
                     > View Website
-                            </a>
+                    </a>
                     : null
                 }
 
@@ -60,7 +64,7 @@ export default function FeatureLocation(props) {
                     }
 
                 </ul>
-                <table className="featured-hours">
+                <table className="featured-hours" aria-label={"Business Hours"}>
                     <caption>Hours</caption>
                     <tbody>
                         {props.featuredLocation.hours.timeframes.map(businessHours => {
@@ -75,6 +79,6 @@ export default function FeatureLocation(props) {
                 </table>
 
             </div>
-        </div>
+        </section>
         );
 }
