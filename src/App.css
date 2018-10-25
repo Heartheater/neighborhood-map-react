@@ -84,15 +84,15 @@
 
 .sidebar-top {
     display: flex;
-    flex-wrap: wrap;
     padding: 5vh 0 3vh 0;
     z-index: 2;
 }
 
 .location-filter-wrapper {
     position: relative;
-    margin:auto;
+    margin: auto;
     padding: 0 30px;
+    min-width: 180px;
 }
 
 .location-filter-btn {
@@ -101,7 +101,7 @@
     border: 1px #b2b2b2 solid;
     border-radius: 2px;
     max-width: 18vw;
-    min-width: 180px;
+    min-width: 135px;
 }
 
 .delete-input-value {

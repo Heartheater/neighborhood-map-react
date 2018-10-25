@@ -12,6 +12,7 @@ export default class MapContainer extends Component {
         activeMarker: null,
         allMarkers: [],
         infoWindow: new this.props.google.maps.InfoWindow(),
+        featuredLocation: false,
     }
 
     async componentDidMount() {
@@ -50,8 +51,7 @@ export default class MapContainer extends Component {
 
             //show info window when marker is clicked
             marker.addListener('click', () => this.showInfo(marker, place, this.state.infoWindow));
-            console.log(marker);
-
+            
             //add this marker to allMarkers array
             return this.setState((prev) => ({
                 allMarkers: [...prev.allMarkers, marker]
@@ -109,13 +109,21 @@ export default class MapContainer extends Component {
         infoWindow.setContent(windowContent);
         infoWindow.open(this.map, marker);
 
+
+        //bring up details of the clicked location in the sidebar
+        this.setState({ featuredLocation: locationObj });
+
         //erase content when window closes
-        infoWindow.addListener('closeclick', () => infoWindow.marker = null);
+        infoWindow.addListener('closeclick', () => {
+            this.setState({ featuredLocation: null });
+            return infoWindow.marker = null;
+        });
+
+
     }; //showInfo end
 
     animateMarker(marker) {
         const { google } = this.props;
-
         //return if marker still has an animation 
         if (marker.getAnimation()) return;
         marker.setAnimation(google.maps.Animation.BOUNCE);
@@ -123,6 +131,7 @@ export default class MapContainer extends Component {
     }
 
     locationClickHandler = (location) => {
+        //map through all the markers to find the matching location name
         this.state.allMarkers.map(marker => {
             if (location.name.toLowerCase() === marker.name.toLowerCase()) {
                 //show info window for the clicked location
@@ -130,9 +139,10 @@ export default class MapContainer extends Component {
                 this.animateMarker(marker);
             }
         });
+        //displays more info in the sidebar for the clicked location
+        return this.setState({ featuredLocation: location });
     }
-
-
+    
     filterMarkers(query) {
         //check each map marker to see if it matches the search query
         this.state.allMarkers.map(marker => {
@@ -153,6 +163,8 @@ export default class MapContainer extends Component {
                     locationsArray={this.props.locationsArray}
                     locationClickHandler={this.locationClickHandler}
                     findPhoto={this.findLocationPhoto}
+                    featuredLocation={this.state.featuredLocation}
+                    backToListView={() => this.setState({ featuredLocation: null })}
                 >
 
                     <div className="location-filter-wrapper">
@@ -182,7 +194,7 @@ export default class MapContainer extends Component {
                         > x
                         </button>
                     </div>
-                </Sidebar >
+                </Sidebar>
                 
                 <div className="map" ref="map" role="application">
                     Loading Map...

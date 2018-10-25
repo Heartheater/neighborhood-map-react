@@ -19,3 +19,8 @@ button:hover, a:hover {
 button:active {
     background-color: #fe6565;
 }
+
+:focus{
+    outline:#fe6565 solid 1px;
+    border-radius: 2px;
+}
