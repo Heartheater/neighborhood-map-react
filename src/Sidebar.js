@@ -41,7 +41,6 @@ export default class Sidebar extends Component {
                     className='location-list-item'
                     onClick={() => this.props.locationClickHandler(place)}
                     aria-label={`${place.name}`}
-                    aria-details={`li-desc-${place.id}`}
                     role="button"
                     onKeyPress={(e) => {
                         e.preventDefault();
@@ -56,7 +55,7 @@ export default class Sidebar extends Component {
                             {place.name}
                         </h3>
                         <hr/>
-                        <div className="location-desc" id={`li-desc-${place.id}`}>
+                        <div className="location-desc">
                             <div className="location-category">
                                 {`${place.categories ? place.categories[0].name : ''}`}
                             </div>

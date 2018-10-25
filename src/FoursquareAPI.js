@@ -1,6 +1,7 @@
 const foursquareUrl = 'https://api.foursquare.com/v2/venues/';
 
 function getAuth() {
+    //authorization keys for Four Square API
     const keys = {
         client_id: 'WCZJJB3ZJOZBTLBNU1WNNY3SZ2VDNCRZVMVYWINIHADUNC0A',
         client_secret: '14H2JOWZNV2KABSLU0KSNIDBMUJ5JHBQ104CDUI0SY3IUO3U',
