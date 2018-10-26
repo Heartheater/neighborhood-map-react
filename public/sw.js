@@ -50,7 +50,6 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-    console.log('Fetching', e.request.url);
     e.respondWith(
         caches.match(e.request).then((response) => {
             //if response is found in the cache return it
