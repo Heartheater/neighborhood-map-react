@@ -1,13 +1,13 @@
 # Neighborhood Map
-This is an app using Google Maps to show you a section of a neighborhood and information about interesting places near it.
+This is an app using Google Maps and React that shows you a section of a neighborhood and information about interesting places near it.
 
 ## Using the app
 
-Type in `npm start` to lauch the app in development mode.<br>
+Download the app then in the app directory folder use `npm install` to install dependencies. 
+Then type in `npm start` to lauch the app in development mode.<br>
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 <br>
-You can change the API key by going into `App.js` and changing
-`googleApiKey` at the top of the script.
+You can change the Google API key by going into `App.js` and changing `googleApiKey` at the top of the script.
 
 
 ### Credits 
