@@ -34,7 +34,8 @@ export default class Sidebar extends Component {
 
         //create a li for each location object
         this.props.locationsArray.map((place) => {
-            if (!place || !place.name) return;
+            if (!place || !place.name) return null;
+
             listItems.push(
                 <li
                     key={`location-list-item-${count}`}
@@ -88,7 +89,6 @@ export default class Sidebar extends Component {
         });
 
 
-
         //add foursquare logo to end of list
         listItems.push(
             <li className="fs-logo-wrapper" key="location-list-logo" >
@@ -98,6 +98,18 @@ export default class Sidebar extends Component {
             </li>
         );
         return listItems;
+    }
+
+
+    showError() {
+        if (!this.props.fourSquareError) return null;
+
+        //return error message if there was an error
+        return (
+            <li className="no-results" aria-label="error loading data">
+                Error loading data from Foursquare
+            </li>
+        );
     }
 
     render() {
@@ -129,10 +141,14 @@ export default class Sidebar extends Component {
                             {this.props.locationsArray[0] ?
                                 this.getListItems()
                                 :
-                                <li className="no-results" aria-label="no results found">
-                                    No Results Found
-                                </li>
+                                this.props.fourSquareError ?
+                                    this.showError()
+                                    :
+                                    <li className="no-results" aria-label="no results found">
+                                        No Results Found
+                                    </li>
                             }
+
                         </ul>
                     </div>
                     }

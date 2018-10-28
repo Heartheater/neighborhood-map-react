@@ -18,12 +18,13 @@ class App extends Component {
         allLocations: [],
         searchResults: [],
         loading: true,
+        fourSquareError: false,
     }
     
     async componentDidMount() {
         let locationIds = [
-            "4d4464d4bf61a1cd2b5408ac",
             "4f999981e5e82ef193a1ce45",
+            "4d4464d4bf61a1cd2b5408ac",
             "4df7c1342271d8baf9c4de8d",
             "4ed67e1a61afeefb7cdc16ef",
             "5230bf8811d2a4689e05fc19",
@@ -31,22 +32,32 @@ class App extends Component {
             "530e49af498eb68729749d86",
             "5244874911d23515396871b5",
         ];
+
         let locationData = [];
+
         //loop through locationIds array and use each id to fetch location data
         for (let count = 0; count < locationIds.length; ++count) {
             await FoursquareAPI.getLocationDetails(locationIds[count])
                 .then(data => {
+                    //check if there was an error fetching foursquare
                     if (data.meta.errorDetail) {
+                        this.setState({
+                            fourSquareError: true
+                        });
                         return console.error(`FourSquareAPI fetch error ${data.meta.errorDetail}`);
+                    } else {
+                        this.setState({
+                            fourSquareError: false
+                        });
                     }
                     return locationData.push(data.response.venue);
                 }).catch(err => console.error(err));
         }
 
-        this.setState({
+        return this.setState({
             allLocations: locationData,
             searchResults: locationData,
-            loading: false
+            loading: false,
         });
     }
     
@@ -71,6 +82,7 @@ class App extends Component {
                     }
                 }
             }
+            return null;
         });
 
         return this.setState({ searchResults: matchedLocations });
@@ -98,7 +110,7 @@ class App extends Component {
                 <h1 className="title"> React Neighborhood Map </h1>
             </header>
             {this.state.loading ?
-                <p className="loading">loading...</p>
+                <h2 className="loading-text">Loading App <span className="loading-animation"/></h2>
                 :
                 <ErrorHandler>
                     <MapContainer
@@ -110,6 +122,7 @@ class App extends Component {
                         defaultZoom={16}
                         filterLocations={this.filterLocations}
                         locationsArray={this.state.searchResults}
+                        fourSquareError={this.state.fourSquareError}
                     />
                 </ErrorHandler>
             }

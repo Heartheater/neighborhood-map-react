@@ -80,6 +80,7 @@ export default class MapContainer extends Component {
                 if (photoGroup.count > 0) {
                    photo = (photoGroup.items[0].prefix + dimensions + photoGroup.suffix);
                 }
+                return photo;
             });//map end
         }
         return photo;
@@ -138,6 +139,7 @@ export default class MapContainer extends Component {
                 this.showInfo(marker, location, this.state.infoWindow);
                 this.animateMarker(marker);
             }
+            return marker;
         });
         //displays more info in the sidebar for the clicked location
         return this.setState({ featuredLocation: location });
@@ -165,6 +167,7 @@ export default class MapContainer extends Component {
                     findPhoto={this.findLocationPhoto}
                     featuredLocation={this.state.featuredLocation}
                     backToListView={() => this.setState({ featuredLocation: null })}
+                    fourSquareError={this.props.fourSquareError}
                 >
 
                     <div className="location-filter-wrapper">

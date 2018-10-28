@@ -21,14 +21,6 @@
     margin: 0;
 }
 
-.loading{
-    position: fixed;
-    top: 90px;
-    left: 40px;
-    margin:auto;
-}
-
-
 .open-sidebar-btn {
     position: relative;
     border: none;
@@ -37,6 +29,26 @@
     background-color: transparent;
     width: 40px;
     height: 40px;
+}
+
+
+.loading-text {
+    position: fixed;
+    display: flex;
+    top: 90px;
+    left: 30vw;
+    font-weight: normal;
+    color: #787474;
+}
+
+.loading-animation {
+    width: 27px;
+    height: 27px;
+    margin-left: 20px;
+    border: #f2f4f4 4px solid;
+    border-top: #d64949 4px solid;
+    border-radius: 50%;
+    animation: spin 1s infinite linear;
 }
 
 /************************* Map ******************************/
@@ -119,12 +131,12 @@
 
 .no-results {
     margin: 20px auto 0 auto;
-    position:relative;
+    position: relative;
+    max-width: 190px;
+    font-style: italic;
 }
 
-
 /*************************** Location list item **********************/
-
 .location-list-item {
     width: 100%;
     margin: 8px 0;
@@ -395,6 +407,17 @@
         top: 0;
     }
 }
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 
 @media screen and (max-width: 497px){
     .header {
