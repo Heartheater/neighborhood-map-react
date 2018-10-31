@@ -61,26 +61,24 @@ self.addEventListener('fetch', (e) => {
 
             //fetch if request is not already in the cache
             return fetch(e.request).then((fetchResponse) => {
-                if (fetchResponse.status == 0) {
-                    //don't cache if status = 0
-                    return fetchResponse;
+                if (!(fetchResponse.status == 0)) {
+                    //add request to cache if the response status isn't 0
+                    e.waitUntil(caches.open(currentCache)
+                        .then(cache => {
+                            if (!fetchResponse.bodyUsed) {
+                                let responseClone = fetchResponse.clone();
+                                cache.put(e.request.url, responseClone);
+                            }
+                            else {
+                                cache.add(e.request.url);
+                            }
+                            return fetchResponse;
+                        }).catch(err => console.error("Service Worker error fetching & caching new data: ", err))
+                    );
                 }
-                //add request to cache
-                e.waitUntil(caches.open(currentCache)
-                    .then(cache => {
-                        if (!fetchResponse.bodyUsed) {
-                            let responseClone = fetchResponse.clone();
-                            cache.put(e.request.url, responseClone);
-                        }
-                        else {
-                            cache.add(e.request.url);
-                        }
-                        return fetchResponse;
-                    }).catch(err => console.error("Service Worker error fetching & caching new data: ", err))
-                );
+
                 return fetchResponse;
             });
-        })
+        }).catch(err => console.error(`Service Worker fetch error: ${err}`))
     );
 });
-

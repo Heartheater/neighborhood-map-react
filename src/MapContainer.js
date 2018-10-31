@@ -1,8 +1,13 @@
 import React, { Component } from 'react';
 import escapeRegEx from 'escape-string-regexp';
 import Sidebar from './Sidebar';
+import { GoogleApiWrapper } from 'google-maps-react';
 
-export default class MapContainer extends Component {
+//google maps Api key
+const googleApiKey = `AIzaSyCvRrihVSVciSghCR1F0HLX1pQXwL_xmTM`;
+let mapLoading = true;
+
+class MapContainer extends Component {
     state = {
         defaultMapCenter: {
             lat: 40.7413549,
@@ -16,6 +21,8 @@ export default class MapContainer extends Component {
     }
 
     async componentDidMount() {
+        mapLoading = false;
+
         this.loadMap();
         this.addMarkers();
     }
@@ -209,3 +216,25 @@ export default class MapContainer extends Component {
     }
 }
 
+const LoadingContainer = (props) => (<div className="loading-text loading-map"> Loading Map... </div>);
+
+export default GoogleApiWrapper({
+    //pass apiKey and google maps url to the api call's parameters
+    apiKey: googleApiKey,
+    url: 'https://maps.googleapis.com/maps/api/js',
+    LoadingContainer: LoadingContainer,
+})(MapContainer);
+
+
+//wait 10 seconds to check if the map still hasn't loaded
+setTimeout(() => {
+    //if the map is still loading
+    if (mapLoading) {
+        const loadingContainer = document.querySelector('.loading-map');
+        //show error message
+        return loadingContainer.innerHTML = ('There was an error loading the map');
+    } //or if map already loaded return null
+    else {
+        return null;
+    }
+}, 10000);
