@@ -231,6 +231,7 @@ setTimeout(() => {
     //if the map is still loading
     if (mapLoading) {
         const loadingContainer = document.querySelector('.loading-map');
+        if (!loadingContainer) return;
         //show error message
         return loadingContainer.innerHTML = ('There was an error loading the map');
     } //or if map already loaded return null

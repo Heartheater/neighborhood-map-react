@@ -17,7 +17,7 @@ export default function FeatureLocation(props) {
                 </h2>
             </div>
 
-            <div className="featured-details" aria-label={`${props.featuredLocation.categories[0].name}`}>
+            <div className="featured-details" aria-label={`${props.featuredLocation.categories ? props.featuredLocation.categories[0].name : null}`}>
                 <div className="featured-rating-price-wrapper">
                     <div aria-label={"restaurant rating"}>
                         {props.featuredLocation.rating}
@@ -25,10 +25,14 @@ export default function FeatureLocation(props) {
                     <div aria-hidden={"true"}>
                         {props.getRating(props.featuredLocation)}
                     </div>
-                    <div className="featured-price" aria-label={"restaurant price"}>
-                        {props.featuredLocation.price.currency}
-                    </div>
-                    {props.featuredLocation.categories[0].name}
+                    {props.featuredLocation.price ? 
+                        <div className="featured-price" aria-label={"restaurant price"}>
+                            {props.featuredLocation.price.currency}
+                        </div>
+                        : null
+                    }
+
+                    {props.featuredLocation.categories ? props.featuredLocation.categories[0].name : null}
                 </div>
                 {props.featuredLocation.url ?
                     <a target="_tab"
@@ -41,17 +45,25 @@ export default function FeatureLocation(props) {
                 }
 
                 <ul className="featured-contact-detail">
-                    <li>
-                        <i className="fas fa-clock icon"></i>
-                        {props.featuredLocation.hours.status}
-                    </li>
+                    {props.featuredLocation.hours ?
+                        <li>
+                            <i className="fas fa-clock icon"></i>
+                            {props.featuredLocation.hours.status}
+                        </li>
+                        : null
+                    }
+
                     <li>
                         <i className="fas fa-location-arrow icon"></i>
-                        <div className="featured-address">
-                            {props.featuredLocation.location.formattedAddress[0]}
-                            <br />
-                            {props.featuredLocation.location.formattedAddress[1]}
-                        </div>
+                        {props.featuredLocation.location ? 
+                            <div className="featured-address">
+                                {props.featuredLocation.location.formattedAddress[0]}
+                                <br />
+                                {props.featuredLocation.location.formattedAddress[1]}
+                            </div>
+                            : null
+                        }
+
                     </li>
                     {props.featuredLocation.contact.formattedPhone ?
                         <li>
@@ -64,19 +76,22 @@ export default function FeatureLocation(props) {
                     }
 
                 </ul>
-                <table className="featured-hours" aria-label={"Business Hours"}>
-                    <caption>Hours</caption>
-                    <tbody>
-                        {props.featuredLocation.hours.timeframes.map(businessHours => {
-                            return (
-                                <tr key={`hrs-${businessHours.days}`}>
-                                    <th>{businessHours.days}: </th>
-                                    <td>{businessHours.open[0].renderedTime} </td>
-                                </tr>
-                            );
-                        })}
-                    </tbody>
-                </table>
+                {props.featuredLocation.hours ?
+                    <table className="featured-hours" aria-label={"Business Hours"}>
+                        <caption>Hours</caption>
+                        <tbody>
+                            {props.featuredLocation.hours.timeframes.map(businessHours => {
+                                return (
+                                    <tr key={`hrs-${businessHours.days}`}>
+                                        <th>{businessHours.days}: </th>
+                                        <td>{businessHours.open[0].renderedTime} </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                    :null
+                }
 
             </div>
         </section>

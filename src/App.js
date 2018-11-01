@@ -7,8 +7,8 @@ import FoursquareAPI from './FoursquareAPI';
 export default class App extends Component {
     state = {
         mapCenter: {
-            lat: 34.749859,
-            lng: -112.114983
+            lat: 33.448376,
+            lng: -112.074036
         },
         allLocations: [],
         searchResults: [],
@@ -18,19 +18,14 @@ export default class App extends Component {
     
     async componentDidMount() {
         let locationIds = [
-            "4b774f58f964a520f5902ee3",
-            "4bc0f2ceb492d13a123ca560",
-            "4bae81e5f964a520c9ba3be3",
-            "51ed7c95498e21212f39e672",
-            "4c390ad93849c928eea6c0b1",
-            "4d98d729af3d236aeb2246c7",
-            "548cbf12498e6b13ea18b0e0",
-            "4b889184f964a5204a0132e3",
-            "4cf40154cc61a35d9436239e",
-            "5404ec65498e50e6e21ecfa8",
-            "4d601574ef378cfa52a878a6",
-            "527ab3bb498e3f8e27bad5e5",
-            "4bb7b2bf3db7b7139568209a",
+            "4f999981e5e82ef193a1ce45",
+            "4d4464d4bf61a1cd2b5408ac",
+            "4df7c1342271d8baf9c4de8d",
+            "4ed67e1a61afeefb7cdc16ef",
+            "5230bf8811d2a4689e05fc19",
+            "55107942498ed654c625de3f",
+            "530e49af498eb68729749d86",
+            "5244874911d23515396871b5",
         ];
 
         let locationData = [];
@@ -118,7 +113,7 @@ export default class App extends Component {
                             lat: this.state.mapCenter.lat,
                             lng: this.state.mapCenter.lng
                         }}
-                        defaultZoom={15}
+                        defaultZoom={16}
                         filterLocations={this.filterLocations}
                         locationsArray={this.state.searchResults}
                         fourSquareError={this.state.fourSquareError}
