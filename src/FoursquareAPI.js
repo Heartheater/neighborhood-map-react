@@ -34,7 +34,10 @@ function fetchFoursquareData(endPoint, method, parameters) {
         `${foursquareUrl + endPoint}?${getAuth()}&${getUrlFromParams(parameters)}`,
         request
     ).then(response => response.json())
-        .catch(err => console.error(`Error fetching Foursquare Data: ${err}`));
+        .catch(err => {
+            console.log(`Error fetching Foursquare Data, ${err}`);
+            alert("Error getting FourSquare Data");
+        });
 }
 
 
@@ -59,8 +62,9 @@ export default class FoursquareAPI {
             categoryId: '4d4b7105d754a06374d81259',
             limit: 30, //limit results
             radius: 300 //search radius in meters
-        }).then(res => res.response.venues.map(venue => locationIds.push(venue.id))
-        ).catch(err => console.error(err));
+        }).then(res => {
+            res.response.venues.map(venue => locationIds.push(venue.id));
+        }).catch(err => console.error(err));
         console.log(locationIds);
         return locationIds;
     }
